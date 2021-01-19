@@ -1,3 +1,4 @@
+org: joseacastellanos
 service: serverless-rest-api-with-dynamodb
 
 app: api-restful-todo
@@ -7,6 +8,7 @@ frameworkVersion: ">=1.1.0"
 provider:
   name: aws
   runtime: python3.8
+  role: arn:aws:iam::178767680692:role/serverless-rest-api-with-dynamodb-translate
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
@@ -42,6 +44,14 @@ functions:
     events:
       - http:
           path: todos/{id}
+          method: get
+          cors: true
+          
+  getTranslate:
+    handler: todos/getTranslate.get
+    events:
+      - http:
+          path: todos/{id}/{language}
           method: get
           cors: true
 
